@@ -1,0 +1,102 @@
+main {
+  --fs: clamp(13.5px, 1.2vw, 14.5px);       /* texte : taille visuelle proche de l'iPad horizontal */
+  --fs-lead: clamp(14.5px, 1.3vw, 16px);
+  display: grid; grid-template-columns: 51fr 42fr; column-gap: 3vw;
+  padding: 0.5vw 2vw 4vw; align-items: stretch; row-gap: 3vw;
+}
+/* Deux colonnes indépendantes : la marge sous le diaporama est toujours de 3vw */
+.col1 { grid-column: 1; display: flex; flex-direction: column; min-width: 0; }
+.col2 { grid-column: 2; display: flex; flex-direction: column; min-width: 0; }
+.col1 .rest { margin-top: 3vw; }
+
+/* Accroche en haut à droite, au-dessus du diaporama et du texte */
+.lead {
+  grid-column: 1 / -1; justify-self: end; max-width: 62%; text-align: left;
+  font-size: var(--fs-lead); font-weight: 800; line-height: 1.3; letter-spacing: -0.015em;
+  margin: 0 0 -1vw;
+}
+
+/* Diaporama */
+.show { position: relative; aspect-ratio: 4 / 3; overflow: hidden; flex: none; }
+.slide { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; opacity: 0; z-index: 0; }
+.slide.cur { opacity: 1; z-index: 1; }
+.credit { font-size: calc(var(--fs) * 0.8); line-height: 1.4; margin-top: 0.5em; min-height: 1.4em; }
+
+/* Texte */
+.info { flex: 1 1 auto; font-size: var(--fs); line-height: 1.55; padding-top: 0.3vw; position: relative; }
+.infoin { display: flex; flex-direction: column; height: 100%; }
+.txt { flex: 1 1 auto; min-height: 0; overflow: hidden; }
+.rest { display: none; font-size: var(--fs); line-height: 1.55; }
+.txt, .rest { text-align: justify; hyphens: auto; -webkit-hyphens: auto; }
+.txt p + p, .ttl + p, .rest p + p { margin-top: 0.8em; }
+.col2 .rest { margin-top: 0.8em; }
+.txt p:first-child { font-weight: 700; }
+.txt strong, .rest strong { font-weight: 700; }
+.ttl { font-size: inherit; font-weight: 700; }
+.txt h2 { font-size: 1em; font-weight: 800; margin-top: 1.2em; }
+.rest .orig h2 { font-size: 1em; font-weight: 800; margin: 0 0 0.8em; }
+.col2 .rest .thierry { margin-bottom: 0.8em; }
+.txt a { color: inherit; overflow-wrap: anywhere; }
+main.open .rest { display: block; }
+
+/* replié : le bloc de texte épouse exactement la hauteur du diaporama, bouton calé en bas */
+@media (orientation: landscape) {
+  .info:not(.open) .infoin { position: absolute; inset: 0; }
+  .info.open .infoin { height: auto; }
+  .info.open { flex: none; }
+}
+.info:not(.open) .txt {
+  -webkit-mask-image: linear-gradient(#000 60%, transparent);
+  mask-image: linear-gradient(#000 60%, transparent);
+}
+.info.open .txt { flex: none; }
+
+/* Boutons « Voir plus » / « Voir moins » */
+.more {
+  display: block; flex: none; align-self: flex-start; margin: 0.8em 0 0; padding: 0.45em 1.2em; font-size: var(--fs);
+  background: #2a17f5; color: #fff; border: 0; cursor: pointer;
+  font-family: 'Montserrat', sans-serif; font-weight: 400;
+}
+.more:hover { background: #1a0bd0; }
+.info.open .more { display: none; }
+.more.less { display: none; grid-column: 1 / -1; margin-top: -1.2vw; justify-self: start; }
+main.open .more.less { display: block; }
+
+/* Pages courtes (sans « Voir plus ») : tout le texte est affiché */
+main.short .info .infoin, main.short .info:not(.open) .infoin { position: static; height: auto; }
+main.short .info .txt, main.short .info:not(.open) .txt {
+  flex: none; max-height: none; overflow: visible; -webkit-mask-image: none; mask-image: none;
+}
+main.short .txt p:first-child { font-weight: 400; }
+
+/* Ordinateur (souris) : tout le texte à droite, sans bouton ; diaporama fixe en haut pendant le défilement */
+@media (orientation: landscape) and (hover: hover) and (pointer: fine) and (min-width: 1000px) {
+  main { row-gap: 0; }
+  .col1, .col2 { display: contents; }
+  .lead { grid-row: 1; margin-bottom: 2vw; }
+  .left { grid-column: 1; grid-row: 2 / span 3; position: sticky; top: 1.5vw; align-self: start; }
+  .info { grid-column: 2; grid-row: 2; flex: none; }
+  .col1 .rest { grid-column: 2; grid-row: 3; margin-top: 0.8em; }
+  .col2 .rest { grid-column: 2; grid-row: 4; margin-top: 0.8em; }
+  .info .infoin, .info:not(.open) .infoin { position: static; height: auto; }
+  .info .txt, .info:not(.open) .txt { overflow: visible; -webkit-mask-image: none; mask-image: none; flex: none; }
+  .more, main.open .more.less { display: none; }
+  .rest { display: block; }
+}
+
+/* Vertical : accroche, puis texte, puis diaporama dessous */
+@media (orientation: portrait) {
+  main { --fs: clamp(13.5px, 2vw, 14.5px); --fs-lead: clamp(15px, 2.4vw, 16px); display: flex; flex-direction: column; padding: 2vw 4.4vw 8vw; row-gap: 0; }
+  .col1, .col2, .left { display: contents; }
+  .lead { order: 1; max-width: none; justify-self: auto; margin-bottom: 4vw; }
+  .credit { order: 7; }
+  .info { order: 2; flex: none; padding-top: 0; }
+  .col1 .rest { order: 3; margin-top: 0.8em; }
+  .col2 .rest { order: 4; margin-top: 0.8em; }
+  .more.less { order: 5; align-self: flex-start; margin-top: 4vw; }
+  .show { order: 6; margin-top: 6vw; width: 100%; aspect-ratio: auto; height: 0; padding-bottom: 75%; }
+  .infoin { height: auto; }
+  .txt { flex: none; max-height: 15em; }
+  .info.open .txt { max-height: none; }
+  main.short .txt { max-height: none; }
+}

@@ -1,0 +1,42 @@
+.hero {
+  position: relative; height: 49.1vw;
+  --h: 49.1vw;
+  background: url('images/fond_2000.jpg') 50% calc(var(--h) * 0.65 - 44.43vw) / cover no-repeat;
+}
+.hero h1 {
+  position: absolute; top: 2.5vw; right: 16.4vw;
+  display: flex; flex-direction: column; align-items: flex-end;
+  font-size: 4.9vw; font-weight: 800; line-height: 1; letter-spacing: -0.01em;
+}
+.hero h1 span {
+  display: block; background: #fff;
+  padding: 0.28em 0.18em 0.22em 0.12em; margin-bottom: 0.14em;
+  white-space: nowrap;
+}
+.hero h1 span:last-child { margin-bottom: 0; }
+
+/* Paysage de petite hauteur (iPhone horizontal) : tout tient dans l'écran */
+@media (orientation: landscape) and (max-width: 1024px) {
+  .hero { --h: calc(100vh - max(22vh, 80px)); --h: calc(100svh - max(22vh, 80px)); height: var(--h); }
+  /* texte proportionné à la hauteur réelle de la photo, comme la maquette */
+  .hero h1 { font-size: min(4.9vw, calc(var(--h) * 0.1)); top: 5%; right: 16.4vw; }
+}
+
+/* Vertical : téléphones et tablettes en portrait */
+@media (orientation: portrait) {
+  .hero {
+    height: min(130vw, calc(100vh - 35.4vw));
+    height: min(130vw, calc(100svh - 35.4vw));
+    background-size: auto 137%; background-position: 50% 0;
+  }
+  .hero h1 {
+    top: 22.5vw; right: 4.4vw;
+    font-size: 9.4vw; line-height: 1;
+  }
+  .hero h1 span { padding: 0.25em 0.2em 0.2em 0.5em; margin-bottom: 0.1em; }
+}
+@media (orientation: portrait) and (min-width: 700px) {
+  /* tablette : logo et titre plus petits, au-dessus du personnage */
+  .hero { height: min(130vw, calc(100vh - 18vw)); height: min(130vw, calc(100svh - 18vw)); }
+  .hero h1 { top: 14vw; font-size: 7.6vw; right: 6vw; }
+}

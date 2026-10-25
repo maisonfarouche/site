@@ -1,0 +1,86 @@
+  @font-face {
+    font-family: 'Montserrat'; font-style: normal; font-weight: 100 900; font-display: swap;
+    src: url('fonts/montserrat-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  @font-face {
+    font-family: 'Montserrat'; font-style: normal; font-weight: 100 900; font-display: swap;
+    src: url('fonts/montserrat-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { overflow-x: hidden; max-width: 100%; }
+body { font-family: 'Montserrat', sans-serif; background: #fff; color: #000; }
+
+header {
+  position: relative; z-index: 10;
+  height: 9.75vw; min-height: 70px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 1.9vw 0 7.5vw;
+}
+.logo img { display: block; width: 16.5vw; min-width: 110px; height: auto; }
+
+nav { display: flex; margin-top: -1.6vw; }
+nav a {
+  background: #2a17f5; color: #fff; text-decoration: none;
+  font-size: 1.05vw; font-weight: 400;
+  padding: 0 1.05vw; height: 2.8vw; min-height: 34px;
+  display: flex; align-items: center; white-space: nowrap;
+  border-left: 1px solid #5a4bff;
+}
+nav a:first-child { border-left: 0; }
+nav a:hover { background: #1a0bd0; }
+nav a[aria-current="page"], nav a[aria-current="page"]:hover {
+  background: #fff linear-gradient(rgba(42,23,245,.75), rgba(42,23,245,.75));
+}
+
+.burger {
+  display: none; background: #2a17f5; border: 0; cursor: pointer;
+  width: 34px; height: 34px; padding: 9px 8px;
+  flex-direction: column; justify-content: space-between;
+}
+.burger span { display: block; height: 2px; background: #fff; border-radius: 2px; transition: transform .2s, opacity .2s; }
+.burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.burger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.burger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+footer {
+  padding: 1vw 2vw 2.5vw; text-align: center; font-size: clamp(10.5px, 0.9vw, 12.5px); line-height: 1.5;
+}
+
+/* Paysage de petite hauteur (iPhone horizontal) */
+@media (orientation: landscape) and (max-width: 1024px) {
+  header { padding: 0 1.9vw 0 3vw; height: max(22vh, 80px); gap: 1.5vw; }
+  .logo { display: block; height: 80%; }
+  .logo img { width: auto; min-width: 0; height: 100%; }
+  nav { margin-top: 0; min-width: 0; flex-shrink: 1; }
+  nav a { font-size: 1.15vw; height: max(2.8vw, 28px); min-height: 0; padding: 0 0.85vw; flex-shrink: 1; white-space: nowrap; }
+}
+
+/* Menu hamburger : tablettes/téléphones en portrait, téléphones en paysage */
+@media (max-width: 1024px) and (orientation: portrait), (orientation: landscape) and (max-height: 500px) {
+  .burger { display: flex; }
+  nav {
+    display: none; min-width: 0; position: absolute; top: 100%; right: 0; left: 0;
+    flex-direction: column; margin: 0;
+  }
+  nav.open { display: flex; }
+  nav a {
+    font-size: 16px; height: auto; padding: 16px 24px;
+    border-left: 0; border-top: 1px solid #5a4bff;
+  }
+  nav a:first-child { border-top: 0; }
+}
+
+/* Vertical : téléphones et tablettes en portrait */
+@media (orientation: portrait) {
+  header { height: 35.4vw; justify-content: center; padding: 0; }
+  .logo img { width: 62vw; min-width: 0; }
+  .burger { position: absolute; top: 14px; right: 14px; }
+  footer { padding: 4vw 4.4vw 6vw; }
+}
+@media (orientation: portrait) and (min-width: 700px) {
+  header { height: 18vw; }
+  .logo img { width: 32vw; }
+}
